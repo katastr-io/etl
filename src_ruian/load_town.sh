@@ -51,7 +51,7 @@ cat <<END | psql
 	SELECT
 		kod,
 		nazev,
-		wkb_geometry,
+		ST_Multi(wkb_geometry),
 		okreskod
 	FROM ${STAGE_SCHEMA}.obce;
 
@@ -64,7 +64,7 @@ cat <<END | psql
 	SELECT
 		kod,
 		nazev,
-		wkb_geometry,
+		ST_Multi(wkb_geometry),
 		obeckod
 	FROM ${STAGE_SCHEMA}.katastralniuzemi;
 
@@ -81,7 +81,7 @@ cat <<END | psql
 		kmenovecislo,
 		pododdelenicisla,
 		vymeraparcely,
-		wkb_geometry,
+		ST_Multi(wkb_geometry),
 		katastralniuzemikod
 	FROM ${STAGE_SCHEMA}.parcely;
 
