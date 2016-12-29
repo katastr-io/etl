@@ -33,7 +33,7 @@ wget -q ${URL}${CSVFILE} -O $CSVFILE
 if [[ $? != 0 ]]; then
     rm -f $CSVFILE
     echo "download failed"
-    exit
+    exit 1
 fi
 
 if [[ $FILE == "20150104" ]]
