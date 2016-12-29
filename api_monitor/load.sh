@@ -17,11 +17,12 @@ esac
 shift # past argument or value
 done
 
-DATE=$(date -d "${FILE%%.csv}" '+%Y-%m-%d')
+FILENAME=$(basename $FILE)
+DATE=$(date -d "${FILENAME%%.csv}" '+%Y-%m-%d')
 
 cat <<END | psql --no-psqlrc -qAt
-    DROP TABLE IF EXISTS "stg_data";
-    CREATE TABLE "stg_data" (
+    DROP TABLE IF EXISTS api_monitor.stg_data;
+    CREATE TABLE api_monitor.stg_data (
         code integer,
         name text,
         total_count integer,
@@ -49,11 +50,11 @@ cat <<END | psql --no-psqlrc -qAt
     );
 END
 
-psql --no-psqlrc -qAt -c "COPY stg_data FROM STDIN WITH (FORMAT CSV, DELIMITER ';', ENCODING 'WINDOWS-1250')" < $FILE
-psql --no-psqlrc -qAt -c "ALTER TABLE stg_data ADD COLUMN valid_at date DEFAULT '${DATE}'"
+psql --no-psqlrc -qAt -c "COPY api_monitor.stg_data FROM STDIN WITH (FORMAT CSV, DELIMITER ';', ENCODING 'WINDOWS-1250')" < $FILE
+psql --no-psqlrc -qAt -c "ALTER TABLE api_monitor.stg_data ADD COLUMN valid_at date DEFAULT '${DATE}'"
 
 cat <<END | psql --no-psqlrc -qAt
-    DELETE FROM area_statistics WHERE valid_at = '${DATE}';
+    DELETE FROM api_monitor.area_statistics WHERE valid_at = '${DATE}';
     INSERT INTO api_monitor.area_statistics (
         code,
         name,
@@ -107,5 +108,5 @@ cat <<END | psql --no-psqlrc -qAt
         builtup_area_area,
         other_area_count,
         other_area_area
-    FROM stg_data;
+    FROM api_monitor.stg_data;
 END
