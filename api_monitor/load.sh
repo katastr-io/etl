@@ -110,3 +110,5 @@ cat <<END | psql --no-psqlrc -qAt
         other_area_area
     FROM api_monitor.stg_data;
 END
+
+psql --no-psqlrc -qAt -c "SELECT api_monitor.update_statistics()";
