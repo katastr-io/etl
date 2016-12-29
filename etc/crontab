@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root HOME=/
+# run-parts
+0 0 2 * * /home/mzimmer1/katastralni-cz/etl/src_ruian/etl.sh > /home/mzimmer1/src_ruian.log 2>&1
+0 4 2 1,4,7,10 * /home/mzimmer1/katastralni-cz/etl/api_monitor/etl.sh > /home/mzimmer1/api_monitor.log 2>&1
