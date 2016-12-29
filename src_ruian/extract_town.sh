@@ -22,13 +22,7 @@ do
 done
 # /Input parameters
 
-# Include libs
 BASEDIR=`dirname $0`
-LIBDIR="${BASEDIR}/../lib"
-GLIBDIR="${BASEDIR}/../../lib"
-
-. $GLIBDIR/functions
-# /Include libs
 
 # Script begining
 LAST_DAY=`date -d "-$(date +%d) day" +%Y%m%d`

@@ -22,7 +22,6 @@ do
 done
 # /Input parameters
 
-# Include libs
 BASEDIR=`dirname $0`
 
 # Script begining
