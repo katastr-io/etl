@@ -6,5 +6,8 @@ Source the `.env` files in `etc` folder before running any binaries.
 
 ## Cron jobs
 
-- download RUIAN data on the second day of every month
-- dowload landuse data on the second day of January, April, July and November
+Install crontab with `crontab etc/crontab.txt`.
+
+- update RUIAN data on the second day of every month
+- update RUIAN parcel data every day
+- update landuse data on the second day of January, April, July and November
