@@ -40,10 +40,6 @@ cat <<END | psql
 
 	TRUNCATE ${TARGET_SCHEMA}.municipality CASCADE;
 	TRUNCATE ${TARGET_SCHEMA}.area CASCADE;
-	TRUNCATE ${TARGET_SCHEMA}.parcel CASCADE;
-
-	DROP INDEX IF EXISTS ${TARGET_SCHEMA}.parcel_geom_idx;
-	ALTER TABLE ${TARGET_SCHEMA}.parcel DROP CONSTRAINT parcel_pkey;
 
 	INSERT INTO ${TARGET_SCHEMA}.municipality (
 		code,
@@ -70,26 +66,6 @@ cat <<END | psql
 		ST_Multi(wkb_geometry),
 		obeckod
 	FROM ${STAGE_SCHEMA}.katastralniuzemi;
-
-	INSERT INTO ${TARGET_SCHEMA}.parcel (
-		id,
-		root_number,
-		part_number,
-		area,
-		geom,
-		area_code
-	)
-	SELECT
-		id,
-		kmenovecislo,
-		pododdelenicisla,
-		vymeraparcely,
-		ST_Multi(wkb_geometry),
-		katastralniuzemikod
-	FROM ${STAGE_SCHEMA}.parcely;
-
-	CREATE INDEX ON ${TARGET_SCHEMA}.parcel USING gist (geom);
-	ALTER TABLE ${TARGET_SCHEMA}.parcel ADD PRIMARY KEY (id);
 
 	COMMIT;
 END

@@ -22,8 +22,6 @@ do
 done
 # /Input parameters
 
-BASEDIR=`dirname $0`
-
 # Script begining
 LAST_DAY=`date -d "-$(date +%d) day" +%Y%m%d`
 

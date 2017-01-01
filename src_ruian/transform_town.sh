@@ -46,8 +46,9 @@ fi
 
 cat <<END | psql
 	BEGIN;
-	DROP SCHEMA IF EXISTS ${STAGE_SCHEMA} CASCADE;
-	CREATE SCHEMA ${STAGE_SCHEMA};
+	CREATE SCHEMA IF NOT EXISTS ${STAGE_SCHEMA};
+	DROP TABLE IF EXISTS ${STAGE_SCHEMA}.obce;
+	DROP TABLE IF EXISTS ${STAGE_SCHEMA}.katastralniuzemi;
 	COMMIT;
 END
 
@@ -58,9 +59,8 @@ then
 	LAST_DAY=`date -d "-$(date +%d) day" +%Y%m%d`
 
 	for f in ${WORK_DIR}/*.xml.gz; do
-		ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT Kod, Nazev, OriginalniHranice, OkresKod FROM Obce" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} host=${PGHOST} port=${PGPORT} user=${PGUSER} active_schema=${STAGE_SCHEMA}" $f
-		ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT Kod, Nazev, OriginalniHranice, ObecKod FROM KatastralniUzemi" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} host=${PGHOST} port=${PGPORT} user=${PGUSER} active_schema=${STAGE_SCHEMA}" $f
-		ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT Id, KmenoveCislo, PododdeleniCisla, VymeraParcely, OriginalniHranice, KatastralniUzemiKod FROM Parcely" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} host=${PGHOST} port=${PGPORT} user=${PGUSER} active_schema=${STAGE_SCHEMA}" $f
+		ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT Kod, Nazev, OriginalniHranice, OkresKod FROM Obce" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} user=${PGUSER} active_schema=${STAGE_SCHEMA}" $f
+		ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT Kod, Nazev, OriginalniHranice, ObecKod FROM KatastralniUzemi" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} user=${PGUSER} active_schema=${STAGE_SCHEMA}" $f
 	done
 else
 	echo 'Cannot import data, there were errors during the temporary schema creation.'

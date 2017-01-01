@@ -4,9 +4,6 @@
 export PG_USE_COPY=YES
 BASEDIR=`dirname $0`
 
-source ${BASEDIR}/../etc/gdal.env
-source ${BASEDIR}/../etc/pgsql.env
-
 # Input parameters
 while [[ $# > 0 ]]
 do
@@ -50,8 +47,8 @@ fi
 
 cat <<END | psql -qAt --no-psqlrc
 	BEGIN;
-	DROP SCHEMA IF EXISTS ${STAGE_SCHEMA} CASCADE;
-	CREATE SCHEMA ${STAGE_SCHEMA};
+	CREATE SCHEMA IF NOT EXISTS ${STAGE_SCHEMA};
+	DROP TABLE IF EXISTS ${STAGE_SCHEMA}.cadastralparcel;
 	COMMIT;
 END
 
@@ -62,6 +59,6 @@ then
         unzip $f -d ${WORK_DIR}
         cp ${BASEDIR}/share/cadastralparcel.gfs ${f%%.zip}.gfs
         ogr2ogr -lco UNLOGGED=ON -lco SPATIAL_INDEX=NO -nlt CONVERT_TO_LINEAR -a_srs EPSG:5514 -sql "SELECT gml_id, label, areaValue, nationalCadastralReference FROM CadastralParcel" -append -gt 65000 -f "PostgreSQL" PG:"dbname=${PGDATABASE} user=${PGUSER} active_schema=${STAGE_SCHEMA}" ${f%%.zip}.xml
-
+		rm -f $f ${f%%.zip}.xml ${f%%.zip}.gfs
     done
 fi
