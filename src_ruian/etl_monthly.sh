@@ -13,6 +13,7 @@ rm -rf /mnt/data/ruian.state
 rm -rf /mnt/data/ruian.town
 rm -rf /mnt/data/ruian.parcel
 
+> $LOG_FILE
 echo "src_ruian monthly update started at $(date)" > $LOG_FILE
 
 ${BASEDIR}/extract_state.sh --work-dir /mnt/data/ruian.state >> $LOG_FILE 2>&1
