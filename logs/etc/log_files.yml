@@ -1,6 +1,0 @@
-files:
-  - /opt/katastr.io/*.log
-destination:
-  host: logs5.papertrailapp.com
-  port: 10746
-  protocol: tls
