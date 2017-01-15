@@ -4,6 +4,6 @@ MAILTO=root HOME=/
 
 # run-parts
 
-0 0 2 * * /opt/etl-COMMIT/src_ruian/etl_monthly.sh
-0 4 1,3-31 * * /opt/etl-COMMIT/src_ruian/etl_daily.sh
-0 4 2,5,10,15,20,25 1,4,7,10 * /opt/etl-COMMIT/api_monitor/etl.sh
+0 0 2 * * /opt/katastr.io/etl-COMMIT/src_ruian/etl_monthly.sh
+0 4 1,3-31 * * /opt/katastr.io/etl-COMMIT/src_ruian/etl_daily.sh
+0 4 2,5,10,15,20,25 1,4,7,10 * /opt/katastr.io/etl-COMMIT/api_monitor/etl.sh
