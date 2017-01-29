@@ -25,13 +25,16 @@ then
     FILE="20150104"
 fi
 
-CSVFILE=$FILE.csv
+ZIPFILE=${FILE}.zip
+CSVFILE=UHDP-${FILE}.csv
 
 echo "downloading ${URL}${FILE}"
-wget -q ${URL}${CSVFILE} -O $CSVFILE
+wget -q ${URL}${ZIPFILE} -O $ZIPFILE
+
+unzip $ZIPFILE
 
 if [[ $? != 0 ]]; then
-    rm -f $CSVFILE
+    rm -f $ZIPFILE
     echo "download failed"
     exit 1
 fi
@@ -40,3 +43,5 @@ if [[ $FILE == "20150104" ]]
 then
     mv $CSVFILE "20150401.csv"
 fi
+
+rm -f $ZIPFILE
