@@ -44,4 +44,6 @@ then
     mv $CSVFILE "20150401.csv"
 fi
 
+mv $CSVFILE ${CSVFILE##UHDP-}
+
 rm -f $ZIPFILE
