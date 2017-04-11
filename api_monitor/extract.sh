@@ -28,10 +28,17 @@ fi
 ZIPFILE=${FILE}.zip
 CSVFILE=UHDP-${FILE}.csv
 
-echo "downloading ${URL}${FILE}"
+echo "downloading ${URL}${ZIPFILE}"
 wget -q ${URL}${ZIPFILE} -O $ZIPFILE
 
-unzip $ZIPFILE
+if [[ $? != 0 ]]; then
+    echo "downloading ${URL}${ZIPFILE}"
+    wget -q ${URL}/${CSVFILE} -O ${CSVFILE}
+fi
+
+if [[ -e ${ZIPFILE} ]]; then
+    unzip $ZIPFILE
+fi
 
 if [[ $? != 0 ]]; then
     rm -f $ZIPFILE
