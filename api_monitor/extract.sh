@@ -20,11 +20,6 @@ esac
 shift # past argument or value
 done
 
-if [[ $FILE == "20150401" ]]
-then
-    FILE="20150104"
-fi
-
 ZIPFILE=${FILE}.zip
 CSVFILE=UHDP-${FILE}.csv
 
@@ -37,18 +32,13 @@ if [[ $? != 0 ]]; then
 fi
 
 if [[ -e ${ZIPFILE} ]]; then
-    unzip $ZIPFILE
+    unzip -j $ZIPFILE
 fi
 
 if [[ $? != 0 ]]; then
     rm -f $ZIPFILE
     echo "download failed"
     exit 1
-fi
-
-if [[ $FILE == "20150104" ]]
-then
-    mv $CSVFILE "20150401.csv"
 fi
 
 mv $CSVFILE ${CSVFILE##UHDP-}
